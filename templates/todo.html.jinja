@@ -40,17 +40,7 @@
 
     <ul class="text-body">
         {% for item in fincialissues%}
-        <li style="{% if item['Complete'] == 1 %}  color: white; text-decoration: line-through; {%endif%}">
-        
-        {%if item ['Complete'] ==0 %}
-        <form action = "/complete" method = "post">
-        <input name="todo_id" value="{{item['ID']}}" hidden>
-        
-        <input type="submit" value="Complete" class="btn btn-primary border border-2 border border-dark w-3 p-10" style="height: 35px;">
-        
-        </form>
-        {% endif%}
-        {{item['Description']}}
+        {{item['description']}}
         
         </li>
         {% endfor%}
@@ -62,7 +52,7 @@
     method="post"
 
 >
-    <textarea name="new_todo" class=" shadow p-3 mb-5 bg-body-tertiary rounded p-3 mb-2 bg-body-secondary border-start-2 rounded-end w-50 p-3 h-75 d-inline-block border border-3 border border-dark">
+    <textarea name="new_question" class=" shadow p-3 mb-5 bg-body-tertiary rounded p-3 mb-2 bg-body-secondary border-start-2 rounded-end w-50 p-3 h-75 d-inline-block border border-3 border border-dark">
     </textarea>
     <p>
     <input type ="submit" class="btn btn-primary border border-4 border border-dark">

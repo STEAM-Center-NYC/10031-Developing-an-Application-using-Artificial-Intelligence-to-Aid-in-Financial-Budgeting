@@ -35,10 +35,9 @@ def user_loader(user_id):
 fincialissues= ["How do i save","is investing in a card a good choice"]
 
 @app.route("/todo")
-def index():
+def todo():
     cursor =  get_db().cursor()
     cursor.execute("SELECT * FROM `User_Questions`")
-    cursor.execute("SELECT * FROM `User_Questions`` ORDER BY `complete`")
     results = cursor.fetchall()
 
     return render_template(
@@ -50,9 +49,9 @@ def index():
 def add():
     cursor =  get_db().cursor()
     
-    new_issue= request.form['new_todo']
+    new_issue= request.form['new_question']
 
-    cursor.execute(f"INSERT INTO `User_Questions``(`description`) VALUES ('{new_issue}') ")
+    cursor.execute(f"INSERT INTO `User_Questions`(`description`) VALUES ('{new_issue}') ")
     
 
     fincialissues.append(new_issue)

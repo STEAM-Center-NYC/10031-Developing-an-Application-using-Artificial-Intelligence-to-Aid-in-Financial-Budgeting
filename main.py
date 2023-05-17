@@ -21,7 +21,7 @@ app.config['SECRET_KEY'] = 'something_random'
 def user_loader(user_id):
      cursor = get_db().cursor()
 
-     cursor.execute("SELECT * from `User` WHERE `id` =%s ", (user_id)),
+     cursor.execute("SELECT * from `Users` WHERE `id` =%s ", (user_id)),
     
      result = cursor.fetchone()
 
@@ -32,42 +32,33 @@ def user_loader(user_id):
 
 #User login manager^^^
 
-bucketlist= ["How do i save","is investing in a card a good choice"]
+fincialissues= ["How do i save","is investing in a card a good choice"]
 
 @app.route("/todo")
 def index():
     cursor =  get_db().cursor()
-    cursor.execute("SELECT * FROM `Todos`")
-    cursor.execute("SELECT * FROM `Todos` ORDER BY `Complete`")
+    cursor.execute("SELECT * FROM `User_Questions`")
+    cursor.execute("SELECT * FROM `User_Questions`` ORDER BY `complete`")
     results = cursor.fetchall()
 
     return render_template(
         "todo.html.jinja",
-        bucketlist=results,
+        fincialissues=results,
         my_variable="2023"
     )
 @app.route("/add", methods=['POST'])
 def add():
     cursor =  get_db().cursor()
     
-    new_todo= request.form['new_todo']
+    new_issue= request.form['new_todo']
 
-    cursor.execute(f"INSERT INTO `Todos`(`Description`) VALUES ('{new_todo}') ")
+    cursor.execute(f"INSERT INTO `User_Questions``(`description`) VALUES ('{new_issue}') ")
     
 
-    bucketlist.append(new_todo)
+    fincialissues.append(new_issue)
     return redirect(('/todo'))
 
-@app.route("/complete", methods = ['POST'])
-def complete():
 
-    todo_id = request.form ['todo_id']
-
-    cursor =  get_db().cursor()
-    
-    cursor.execute(f"UPDATE `Todos` SET `Complete` = 1 WHERE `id` = {todo_id}" )
-
-    return redirect("/todo")
 
 
 
@@ -107,7 +98,7 @@ def sign_in():
            cursor = get_db().cursor()
 
 
-           cursor.execute("SELECT * FROM `User` WHERE `username` = %s", (request.form['username']))
+           cursor.execute("SELECT * FROM `Users` WHERE `username` = %s", (request.form['username']))
            result = cursor.fetchone()
 
            if result is None:
@@ -137,7 +128,7 @@ def sign_up():
       if request.method == 'POST':
         cursor = get_db().cursor()
 
-        photo = request.files['profile_image']
+        photo = request.files['photo']
 
         file_name = photo.filename
 
@@ -154,7 +145,7 @@ def sign_up():
             raise Exception('Invalid file type')
 
         cursor.execute("""
-            INSERT INTO `User` (`username`, `password`, `email`, `birthday`, `bio`, `photo`, `display_name`)
+            INSERT INTO `User` (`username`, `password`, `email`, `date_of_birth`, `phone_number`, `photo`, `display_name`)
             VALUES(%s,%s,%s,%s,%s,%s,%s)
         """, (request.form['username'], request.form['password'],request.form['email'],request.form['brithday'],request.form['bio'],file_name ,request.form['display_name']))
 
@@ -186,10 +177,10 @@ class User:
 #Data base
 def connect_db():
     return pymysql.connect(
-        host="",
-        user="",
-        password="",
-        database="",
+        host="10.100.33.60",
+        user="gabidemi",
+        password="244655536",
+        database="gabidemi_capstone",
         cursorclass=pymysql.cursors.DictCursor,
         autocommit=True
     )

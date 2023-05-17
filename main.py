@@ -2,10 +2,7 @@ from flask import Flask, render_template, request,redirect, send_from_directory,
 import pymysql
 import pymysql.cursors
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
-from flask_httpauth import HTTPBasicAuth
-from werkzeug.security import generate_password_hash, check_password_hash
-import pymysql
-import pymysql.cursors
+
 
 
 
@@ -13,51 +10,12 @@ login_manager = LoginManager()
 
 
 
-
 app = Flask(__name__)
 login_manager.init_app(app)
 
+
 app.config['SECRET_KEY'] = 'something_random'
 
-
-bucketlist= ["skydiving","Ear-piercings"]
-
-@app.route("/todo")
-def index():
-    cursor = get_db().cursor()
-    cursor.execute("SELECT * FROM `Todos`")
-    cursor.execute("SELECT * FROM `Todos` ORDER BY `Complete`")
-    results = cursor.fetchall()
-
-    return render_template(
-        "todo.html.jinja",
-        bucketlist=results,
-        my_variable="2023"
-    )
-@app.route("/add", methods=['POST'])
-@auth.login_required
-def add():
-    cursor = get_db().cursor()
-    
-    new_todo= request.form['new_todo']
-
-    cursor.execute(f"INSERT INTO `Todos`(`Description`) VALUES ('{new_todo}') ")
-    
-
-    bucketlist.append(new_todo)
-    return redirect(('/todo'))
-
-@app.route("/complete", methods = ['POST'])
-@auth.login_required
-def complete():
-
-    todo_id = request.form ['todo_id']
-
-    cursor = get_db().cursor()
-    
-    cursor.execute(f"UPDATE `Todos` SET `Complete` = 1 WHERE `id` = {todo_id}" )
-
-    return redirect("/todo")
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -72,10 +30,56 @@ def user_loader(user_id):
      
      return User(result['id'], result['username'], result['banned'])
 
+#User login manager^^^
+
+bucketlist= ["How do i save","is investing in a card a good choice"]
+
+@app.route("/todo")
+def index():
+    cursor =  get_db().cursor()
+    cursor.execute("SELECT * FROM `Todos`")
+    cursor.execute("SELECT * FROM `Todos` ORDER BY `Complete`")
+    results = cursor.fetchall()
+
+    return render_template(
+        "todo.html.jinja",
+        bucketlist=results,
+        my_variable="2023"
+    )
+@app.route("/add", methods=['POST'])
+def add():
+    cursor =  get_db().cursor()
+    
+    new_todo= request.form['new_todo']
+
+    cursor.execute(f"INSERT INTO `Todos`(`Description`) VALUES ('{new_todo}') ")
+    
+
+    bucketlist.append(new_todo)
+    return redirect(('/todo'))
+
+@app.route("/complete", methods = ['POST'])
+def complete():
+
+    todo_id = request.form ['todo_id']
+
+    cursor =  get_db().cursor()
+    
+    cursor.execute(f"UPDATE `Todos` SET `Complete` = 1 WHERE `id` = {todo_id}" )
+
+    return redirect("/todo")
+
+
+
+#Below this comment is my user page functionality code. 
+
+
+
 @app.get('/media/<path:path>')
 def send_media(path):
     return send_from_directory('media',path)
 
+#Home page
 @app.route("/")
 def index():
 
@@ -84,13 +88,15 @@ def index():
         
     )
 
-
+# Sign Out snippet code
 @app.route('/sign-out')
 def sign_out():
      logout_user()
 
      return redirect('/sign-in')
 
+
+#Sign In page 
 @app.route('/sign-in', methods = ['POST', 'GET'])  
 def sign_in():
       if current_user.is_authenticated:
@@ -121,6 +127,7 @@ def sign_in():
       elif request.method == 'GET':
         return render_template("sign.in.html.jinja")
 
+#Sign Up apge
 @app.route('/sign-up', methods=['POST', 'GET'])
 def sign_up():
        
@@ -158,6 +165,7 @@ def sign_up():
         return render_template("sign.up.html.jinja")
       
 
+#404 page
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html.jinja'),404     
@@ -175,7 +183,7 @@ class User:
      def get_id(self):
         return str(self.id)
           
-
+#Data base
 def connect_db():
     return pymysql.connect(
         host="",
@@ -199,61 +207,11 @@ def close_db(error):
         g.db.close() 
 
 
-if __name__=='__main__':
-        app.run(debug=True)
 
 
-app = Flask(__name__)
-auth = HTTPBasicAuth()
 
-users = {
-    "Wesley": generate_password_hash("hello"),
-    "Ihezuo": generate_password_hash("bye")
-}
-
-@auth.verify_password
-def verify_password(username, password):
-    if username in users and \
-            check_password_hash(users.get(username), password):
-        return username
-    
-bucketlist= ["How do i save","is investing in a card a good choice"]
-
-@app.route("/todo")
-def index():
-    cursor =  get_db().cursor()
-    cursor.execute("SELECT * FROM `Todos`")
-    cursor.execute("SELECT * FROM `Todos` ORDER BY `Complete`")
-    results = cursor.fetchall()
-
-    return render_template(
-        "todo.html.jinja",
-        bucketlist=results,
-        my_variable="2023"
-    )
-@app.route("/add", methods=['POST'])
-@auth.login_required
-def add():
-    cursor =  get_db().cursor()
-    
-    new_todo= request.form['new_todo']
-
-    cursor.execute(f"INSERT INTO `Todos`(`Description`) VALUES ('{new_todo}') ")
     
 
-    bucketlist.append(new_todo)
-    return redirect(('/todo'))
-
-@app.route("/complete", methods = ['POST'])
-@auth.login_required
-def complete():
-
-    todo_id = request.form ['todo_id']
-
-    cursor =  get_db().cursor()
-    
-    cursor.execute(f"UPDATE `Todos` SET `Complete` = 1 WHERE `id` = {todo_id}" )
-
-    return redirect("/todo")
+  
 
 

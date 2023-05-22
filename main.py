@@ -91,7 +91,7 @@ def sign_out():
 @app.route('/sign-in', methods = ['POST', 'GET'])  
 def sign_in():
       if current_user.is_authenticated:
-           return redirect('/feed')
+           return redirect('/todo')
       
 
       if request.method == 'POST':
@@ -110,7 +110,7 @@ def sign_in():
 
                 login_user(user)
 
-                return redirect('/feed')
+                return redirect('/todo')
 
 
            return request.form
@@ -123,7 +123,7 @@ def sign_in():
 def sign_up():
        
       if current_user.is_authenticated:
-        return redirect('/feed')
+        return redirect('/todo')
        
       if request.method == 'POST':
         cursor = get_db().cursor()
@@ -145,12 +145,12 @@ def sign_up():
             raise Exception('Invalid file type')
 
         cursor.execute("""
-            INSERT INTO `User` (`username`, `password`, `email`, `date_of_birth`, `phone_number`, `photo`, `display_name`)
+            INSERT INTO `Users` (`username`, `password`, `email`, `date_of_birth`, `phone_number`, `photo`, `display_name`)
             VALUES(%s,%s,%s,%s,%s,%s,%s)
-        """, (request.form['username'], request.form['password'],request.form['email'],request.form['brithday'],request.form['bio'],file_name ,request.form['display_name']))
+        """, (request.form['username'], request.form['password'],request.form['email'],request.form['brithday'],request.form['phone_number'],file_name ,request.form['display_name']))
 
         
-        return redirect('/feed')
+        return redirect('/todo')
       elif request.method == 'GET':
       
         return render_template("sign.up.html.jinja")

@@ -2,6 +2,7 @@ from flask import Flask, render_template, request,redirect, send_from_directory,
 import pymysql
 import pymysql.cursors
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 

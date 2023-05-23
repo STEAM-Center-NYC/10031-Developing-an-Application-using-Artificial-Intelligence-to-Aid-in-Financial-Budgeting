@@ -197,6 +197,9 @@ def close_db(error):
     if hasattr(g, 'db'):
         g.db.close() 
 
+if __name__=='__main__':
+        app.run(debug=True)
+        
 
 
 

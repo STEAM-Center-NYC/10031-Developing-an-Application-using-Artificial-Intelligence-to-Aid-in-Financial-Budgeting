@@ -60,8 +60,10 @@
 
 
 <div style="height: auto; p-3 mb-2 bg-primary-subtle text-emphasis-primary"  class="border border-dark p-3 bg-info bg-opacity-10 border border-info border-start-2 rounded-end border border-2">
-    <p class="text-body"> I want to complete these goals by: {{my_variable}}</p>
-    <p class="text-body"> Things i would like to do before this year are : </p>
+    <p class="text-body"> How May I Assist You, {{current_user.username}} ? </p>
+    <p class="text-body" style="text-align: center;"> "What's the most effective way of budgetting?"   </p>
+    <p class="text-body " style="text-align: center;" > "How to use the 50/30/20 budgetting rule?"  </p>
+     <p class="text-body" style="text-align: center;"> "How should I track my expenses and income?"  </p>
 
     <ul class="text-body">
         {% for item in fincialissues%}

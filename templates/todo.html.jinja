@@ -61,16 +61,14 @@
 
 <div style="height: auto; p-3 mb-2 bg-primary-subtle text-emphasis-primary"  class="border border-dark p-3 bg-info bg-opacity-10 border border-info border-start-2 rounded-end border border-2">
     <p class="text-body" style="text-align: center;"> How May I Assist You, {{current_user.username}} ? </p>
- 
 
-    <ul class="text-body" style="text-align: center;">
+    <ul class="text-body" style="text-align: right;">
         {% for item in fincialissues%}
-        <p>{{item['description']}}</p>
+        <p style="border: 2px solid; border-radius: 15px; padding: 5px;">{{item['description']}}</p>
         
         </li>
         {% endfor%}
     </ul>
-
 <form
 
     action="/add"

@@ -60,28 +60,31 @@
 
 
 <div style="height: auto; p-3 mb-2 bg-primary-subtle text-emphasis-primary"  class="border border-dark p-3 bg-info bg-opacity-10 border border-info border-start-2 rounded-end border border-2">
-    <p class="text-body" style="text-align: center;"> How May I Assist You, {{current_user.username}} ? </p>
+    <p class="text-body"> I want to complete these goals by: {{my_variable}}</p>
+    <p class="text-body"> Things i would like to do before this year are : </p>
 
-    <ul class="text-body" style="text-align: right;">
+    <ul class="text-body">
         {% for item in fincialissues%}
-        <p style="border: 2px solid; border-radius: 15px; padding: 5px;">{{item['description']}}</p>
+        {{item['description']}}
         
         </li>
         {% endfor%}
     </ul>
+
 <form
 
     action="/add"
     method="post"
 
 >
-<div style="text-align: center;">
-    <textarea name="new_question"class=" shadow p-3 mb-5 bg-body-tertiary rounded p-3 mb-2 bg-body-secondary border-start-2 rounded-end w-50 p-3 h-75 d-inline-block border border-3 border border-dark" >
+    <textarea name="new_question" class=" shadow p-3 mb-5 bg-body-tertiary rounded p-3 mb-2 bg-body-secondary border-start-2 rounded-end w-50 p-3 h-75 d-inline-block border border-3 border border-dark">
+    
+    {{ai.response}}
+    
     </textarea>
     <p>
     <input type ="submit" class="btn btn-primary border border-4 border border-dark">
     </p>
-  </div>
 
 </div>
 </div>

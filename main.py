@@ -51,11 +51,18 @@ def todo():
         fincialissues=results,
         my_variable="2023"
     )
+
+#IMPORTANT!!!! This is the AI functionality code.
+
 @app.route("/add", methods=['POST'])
 def add():
     cursor =  get_db().cursor()
 
-    
+    text = request.form['new_question']
+
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
+    generated_text = pipe(text, max_length=200, do_sample=False, no_repeat_ngram_size=2)[0]
+    ai_response = generated_text['generated_text']
     
     new_issue= request.form['new_question']
 
@@ -63,21 +70,16 @@ def add():
     
 
     fincialissues.append(new_issue)
+    
     return redirect(('/todo'))
 
 
-#IMPORTANT!!!! This is the AI functionality code.
 
-@app.route("/add", methods=['POST'])
-def add():
 
-    text = request.form['new_question']
 
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
-    generated_text = pipe(text, max_length=200, do_sample=False, no_repeat_ngram_size=2)[0]
-    ai_response = generated_text['generated_text']
 
-    return(ai_response)
+
+  
 
 
 #Below this comment is my user page functionality code. 

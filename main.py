@@ -6,8 +6,17 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import pipeline
 
-tokenizer = AutoTokenizer.from_pretrained("cerebras/Cerebras-GPT-2.7B")
-model = AutoModelForCausalLM.from_pretrained("cerebras/Cerebras-GPT-2.7B")
+
+def ai_stuff(text):
+    tokenizer = AutoTokenizer.from_pretrained("cerebras/Cerebras-GPT-2.7B")
+    model = AutoModelForCausalLM.from_pretrained("cerebras/Cerebras-GPT-2.7B")
+
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
+    generated_text = pipe(text, max_length=200, do_sample=False, no_repeat_ngram_size=2)[0]
+    ai_response = generated_text['generated_text']
+
+    return ai_response
+
 
 
 
@@ -60,9 +69,7 @@ def add():
 
     text = request.form['new_question']
 
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
-    generated_text = pipe(text, max_length=200, do_sample=False, no_repeat_ngram_size=2)[0]
-    ai_response = generated_text['generated_text']
+    ai_response = ai_stuff(text)
     
     new_issue= request.form['new_question']
 

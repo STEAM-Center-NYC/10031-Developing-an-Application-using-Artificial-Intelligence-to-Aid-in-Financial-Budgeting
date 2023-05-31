@@ -65,11 +65,20 @@
 
     <ul class="text-body">
         {% for item in fincialissues%}
-        {{item['description']}}
+        <p>{{item['description']}}</p>
         
         </li>
         {% endfor%}
     </ul>
+
+        {# <ul class="text-body">
+        {% for item in fincialissues%}
+        <p>{{item['description']}}</p>
+        
+        </li>
+        {% endfor%}
+    </ul> #}
+
 
 <form
 
@@ -79,7 +88,7 @@
 >
     <textarea name="new_question" class=" shadow p-3 mb-5 bg-body-tertiary rounded p-3 mb-2 bg-body-secondary border-start-2 rounded-end w-50 p-3 h-75 d-inline-block border border-3 border border-dark">
     
-    
+
     </textarea>
     <p>
     <input type ="submit" class="btn btn-primary border border-4 border border-dark">

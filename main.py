@@ -3,19 +3,9 @@ import pymysql
 import pymysql.cursors
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import pipeline
 
 
-def ai_stuff(text):
-    tokenizer = AutoTokenizer.from_pretrained("cerebras/Cerebras-GPT-2.7B")
-    model = AutoModelForCausalLM.from_pretrained("cerebras/Cerebras-GPT-2.7B")
-
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
-    generated_text = pipe(text, max_length=200, do_sample=False, no_repeat_ngram_size=2)[0]
-    ai_response = generated_text['generated_text']
-
-    return ai_response
 
 
 
@@ -27,6 +17,7 @@ login_manager = LoginManager()
 
 app = Flask(__name__)
 login_manager.init_app(app)
+
 
 
 app.config['SECRET_KEY'] = 'something_random'
@@ -63,20 +54,31 @@ def todo():
 
 #IMPORTANT!!!! This is the AI functionality code.
 
+def ai_stuff(user_question):
+    tokenizer = AutoTokenizer.from_pretrained("cerebras/Cerebras-GPT-2.7B")
+    model = AutoModelForCausalLM.from_pretrained("cerebras/Cerebras-GPT-2.7B")
+
+
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
+    generated_text = pipe(user_question, max_length=200, do_sample=False, no_repeat_ngram_size=2)[0]
+    ai_response = generated_text['generated_text']
+
+    return ai_response
+
 @app.route("/add", methods=['POST'])
 def add():
     cursor =  get_db().cursor()
 
-    text = request.form['new_question']
+    user_question = request.form['new_question']
 
-    ai_response = ai_stuff(text)
-    
-    new_issue= request.form['new_question']
-
-    cursor.execute(f"INSERT INTO `User_Questions`(`description`) VALUES ('{new_issue}') ")
+    ai_response = ai_stuff(user_question)
     
 
-    fincialissues.append(new_issue)
+
+    cursor.execute("INSERT INTO `User_Questions`(`description`, `answers`) VALUES(%s,%s)", (user_question, ai_response))
+    
+
+    fincialissues.append(user_question)
     
     return redirect(('/todo'))
 

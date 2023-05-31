@@ -40,6 +40,7 @@ def user_loader(user_id):
 
 fincialissues= ["How do i save","is investing in a card a good choice"]
 
+
 @app.route("/todo")
 def todo():
     cursor =  get_db().cursor()

@@ -7,10 +7,6 @@ from transformers import pipeline
 
 
 
-
-
-
-
 login_manager = LoginManager()
 
 
@@ -58,11 +54,13 @@ def todo():
 def ai_stuff(user_question):
     tokenizer = AutoTokenizer.from_pretrained("cerebras/Cerebras-GPT-2.7B")
     model = AutoModelForCausalLM.from_pretrained("cerebras/Cerebras-GPT-2.7B")
+  
 
 
     pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
     generated_text = pipe(user_question, max_length=200, do_sample=False, no_repeat_ngram_size=2)[0]
     ai_response = generated_text['generated_text']
+
 
     return ai_response
 

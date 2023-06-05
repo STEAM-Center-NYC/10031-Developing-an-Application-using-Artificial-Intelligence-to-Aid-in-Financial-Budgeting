@@ -77,8 +77,8 @@
 
     <ul class="text-body">
         {% for item in fincialissues%}
-        <p>{{item['description']}}</p>
-        <p>{{item['answers']}}</p>
+        <p class="p-3 bg-info bg-opacity-10 border border-success border-start-10 rounded-end" style="text-align: right;">{{item['description']}}</p>
+        <p class="p-3 bg-secondary bg-opacity-10 border border-dark border-start-10 rounded-end" style="text-align: left;">{{item['answers']}}</p>
         
         </li>
         {% endfor%}
